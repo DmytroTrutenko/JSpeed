@@ -28,14 +28,51 @@ const setting = {               // настройки !
 
 function startGame(event) {
     start.classList.add('hide');
+
+    for (let i = 0; i < 20; i++) {
+
+        const line = document.createElement('div');
+        line.classList.add('line');
+        line.style.top = (i * 100) + 'px';
+        line.y = i * 100;
+        gameArea.appendChild(line);
+
+    }
+
+
     setting.start = true;                    // стартуем игру
     gameArea.appendChild(car);             //рисуем див машинки
+    setting.x = car.offsetLeft;              //положение машинки по оси x
+    setting.y = car.offsetTop;              //положение машинки по оси y
     requestAnimationFrame(playGame);          //рисуем анимацию
 }
 
 function playGame() {
-    console.log('playGame!');
+   
+     
+     
     if (setting.start) {
+        moveRoad();
+        if (keys.ArrowLeft && setting.x > 0) {               //двигаем машинку и ставим границы
+            setting.x -= setting.speed;
+        }
+        if (keys.ArrowRight && setting.x < (gameArea.offsetWidth - car.offsetWidth)) {
+            setting.x += setting.speed;
+        }
+
+        if (keys.ArrowDown && setting.y < (gameArea.offsetHeight - car.offsetHeight)) {   //двигаем машинку 
+            setting.y += setting.speed;
+        }
+        if (keys.ArrowUp && setting.y > 0) {
+            setting.y -= setting.speed;
+        }
+
+
+
+
+        car.style.left = setting.x + "px";    //прорисовываем машинку на новых координатах
+        car.style.top = setting.y + "px";
+
         requestAnimationFrame(playGame);      //зацикливаем анимацию! функция вызывает себя же
     }
 }
@@ -51,5 +88,17 @@ function stopRun(event) {
     keys[event.key] = false;
 }
 
+function moveRoad() {
+    let lines = document.querySelectorAll('.line');
+    lines.forEach(function (line) {
+       line.y += setting.speed;
+       line.style.top = line.y+ 'px';
+         
+       if(line.y >= document.documentElement.clientHeight){ 
+           line.y = 0;
+       }
 
+    });
+
+}
 
