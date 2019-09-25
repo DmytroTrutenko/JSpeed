@@ -42,6 +42,10 @@ table {
 	border-spacing: 0;
 }
 
+.fon{
+    background: url(../image/fon3.jpg) center/cover no-repeat;
+}
+
 .hide{
     display: none;
 }
@@ -59,7 +63,7 @@ table {
     height: 100%;
     position: relative;
     margin: auto;
-    background: rgb(53, 51, 51);
+    background: rgb(65, 43, 102);
     overflow: hidden;
 }
 

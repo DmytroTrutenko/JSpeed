@@ -23,19 +23,30 @@ const setting = {               // настройки !
     traffic: 3
 };
 
+/*
+var audioMenu = new Audio('audio/soundMenu.mp3');           
+audioMenu.pause();
+audioMenu.play();
+audioMenu.loop = true;                        
+audioMenu.autoplay = true;                     
+*/
+
+
+
 function getQuantityElements(heightElement) {
     return document.documentElement.clientHeight / heightElement + 1;
 }
 
 
 
-function startGame(event) {
+function startGame(event) 
+{
     start.classList.add('hide');
     gameArea.innerHTML='';                   //обновляем игру! ужаляем все елементы
     score.style.top = 0;
     
 
-    for (let i = 0; i < getQuantityElements(100); i++) {
+    for (let i = 0; i < getQuantityElements(100)+1; i++) {
 
         const line = document.createElement('div');
         line.classList.add('line');
@@ -136,14 +147,14 @@ function moveEnemy() {
 
 
         if (carRect.top <= enemyRect.bottom &&
-            carRect.right >= enemyRect.left &&
-            carRect.left <= enemyRect.right &&
+            carRect.right+4 >= enemyRect.left &&
+            carRect.left+4 <= enemyRect.right &&
             carRect.bottom >= enemyRect.top) {                //столкновения машинок
             setting.start = false;
             start.classList.remove('hide');        //удаляем с кнопки старт  класс стайл
             
             score.style.top = start.offsetHeight;  //рисуем очки ниже под стартом
-            console.log('op');
+          
         }
 
 
