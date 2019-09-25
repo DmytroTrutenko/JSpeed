@@ -31,6 +31,9 @@ function getQuantityElements(heightElement) {
 
 function startGame(event) {
     start.classList.add('hide');
+    gameArea.innerHTML='';                   //обновляем игру! ужаляем все елементы
+    score.style.top = 0;
+    
 
     for (let i = 0; i < getQuantityElements(100); i++) {
 
@@ -45,26 +48,34 @@ function startGame(event) {
     for (let i = 0; i < getQuantityElements(100 * setting.traffic); i++) {
         const enemy = document.createElement('div');
         enemy.classList.add('enemy');
-        enemy.y = -100 * setting.traffic * (i+1) ;
-        enemy.style.top = enemy.y + 'px'; 
+        enemy.y = -100 * setting.traffic * (i + 1);
+        enemy.style.top = enemy.y + 'px';
         enemy.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
         enemy.style.background = 'transparent url(./image/enemy2.png) center/cover no-repeat';
         gameArea.appendChild(enemy);
     }
 
-
+    setting.score = 0;                      //очки 
     setting.start = true;                    // стартуем игру
     gameArea.appendChild(car);             //рисуем див машинки
+    car.style.left = gameArea.offsetWidth/2 - car.offsetWidth/2;                   
+    car.style.top = 'auto';                  //прорисовываем машинку на старт внизу
+    car.style.bottom = '10px';
     setting.x = car.offsetLeft;              //положение машинки по оси x
     setting.y = car.offsetTop;              //положение машинки по оси y
     requestAnimationFrame(playGame);          //рисуем анимацию
+
+
 }
 
 function playGame() {
-   
-     
-     
+
+
+
     if (setting.start) {
+        setting.score += setting.speed;  //очки считаються от сеттинга
+        score.innerHTML = 'SCORE<br>' + setting.score;
+
         moveRoad();
         moveEnemy();
         if (keys.ArrowLeft && setting.x > 0) {               //двигаем машинку и ставим границы
@@ -105,12 +116,12 @@ function stopRun(event) {
 function moveRoad() {
     let lines = document.querySelectorAll('.line');
     lines.forEach(function (line) {
-       line.y += setting.speed;
-       line.style.top = line.y+ 'px';
-         
-       if(line.y >= document.documentElement.clientHeight){ 
-           line.y = -100;
-       }
+        line.y += setting.speed;
+        line.style.top = line.y + 'px';
+
+        if (line.y >= document.documentElement.clientHeight) {
+            line.y = -100;
+        }
 
     });
 
@@ -118,12 +129,31 @@ function moveRoad() {
 
 function moveEnemy() {
     let enemy = document.querySelectorAll('.enemy');
-    enemy.forEach(function (item){
-        item.y += setting.speed/2;
+
+    enemy.forEach(function (item) {
+        let carRect = car.getBoundingClientRect();         // получаем размеры и позицию машинки 
+        let enemyRect = item.getBoundingClientRect();      // получаем размеры и позицию енеми
+
+
+        if (carRect.top <= enemyRect.bottom &&
+            carRect.right >= enemyRect.left &&
+            carRect.left <= enemyRect.right &&
+            carRect.bottom >= enemyRect.top) {                //столкновения машинок
+            setting.start = false;
+            start.classList.remove('hide');        //удаляем с кнопки старт  класс стайл
+            
+            score.style.top = start.offsetHeight;  //рисуем очки ниже под стартом
+            console.log('op');
+        }
+
+
+
+
+        item.y += setting.speed / 2;
         item.style.top = item.y + 'px';
 
-        if(item.y >= document.documentElement.clientHeight){ 
-            item.y = -100* setting.traffic;
+        if (item.y >= document.documentElement.clientHeight) {
+            item.y = -100 * setting.traffic;
             item.style.left = Math.floor(Math.random() * (gameArea.offsetWidth - 50)) + 'px';
         }
 
