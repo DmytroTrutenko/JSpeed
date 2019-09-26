@@ -19,7 +19,7 @@ const keys = {
 const setting = {               // настройки !
     start: false,
     score: 0,
-    speed: 3,
+    speed: 5,
     traffic: 3
 };
 
@@ -91,9 +91,15 @@ function playGame() {
         moveEnemy();
         if (keys.ArrowLeft && setting.x > 0) {               //двигаем машинку и ставим границы
             setting.x -= setting.speed;
+            car.classList.remove('scaleDefolt');
+            car.classList.remove('scaleRight');
+            car.classList.add('scaleLeft');
         }
         if (keys.ArrowRight && setting.x < (gameArea.offsetWidth - car.offsetWidth)) {
             setting.x += setting.speed;
+            car.classList.remove('scaleDefolt');
+            car.classList.remove('scaleLeft');
+            car.classList.add('scaleRight');
         }
 
         if (keys.ArrowDown && setting.y < (gameArea.offsetHeight - car.offsetHeight)) {   //двигаем машинку 
@@ -122,6 +128,8 @@ function startRun(event) {
 function stopRun(event) {
     event.preventDefault();
     keys[event.key] = false;
+    car.classList.add('scaleDefolt');
+    
 }
 
 function moveRoad() {
@@ -147,8 +155,8 @@ function moveEnemy() {
 
 
         if (carRect.top <= enemyRect.bottom &&
-            carRect.right+4 >= enemyRect.left &&
-            carRect.left+4 <= enemyRect.right &&
+            carRect.right-6 >= enemyRect.left &&
+            carRect.left+6 <= enemyRect.right &&
             carRect.bottom >= enemyRect.top) {                //столкновения машинок
             setting.start = false;
             start.classList.remove('hide');        //удаляем с кнопки старт  класс стайл

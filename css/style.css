@@ -42,6 +42,7 @@ table {
 	border-spacing: 0;
 }
 
+
 .fon{
     background: url(../image/fon3.jpg) center/cover no-repeat;
 }
@@ -107,4 +108,20 @@ table {
     font-weight: 500; 
     color: skyblue;
 }
+.scaleLeft{
+   transform: rotate(-25deg);
+   transition: .3s;
+}
+
+.scaleRight{
+    transform: rotate(25deg);
+    transition:  .3s;
+ }
+ 
+ .scaleDefolt{
+     transform: none;
+     transition: .3s;
+ }
+ 
+
 
