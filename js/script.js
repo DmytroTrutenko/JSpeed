@@ -23,14 +23,14 @@ const setting = {               // настройки !
     traffic: 3
 };
 
-/*
-var audioMenu = new Audio('audio/soundMenu.mp3');           
-audioMenu.pause();
-audioMenu.play();
-audioMenu.loop = true;                        
-audioMenu.autoplay = true;                     
-*/
-
+//audio
+const audio = new Audio();           
+audio.src = './soundMenu.mp3';
+let allow = false;                   
+audio.addEventListener('loadeddata', () => {
+allow = true;
+});
+//audio
 
 
 function getQuantityElements(heightElement) {
@@ -66,6 +66,11 @@ function startGame(event)
         gameArea.appendChild(enemy);
     }
 
+    if(allow){
+        audio.play();   //вкл  аудио если загружено
+     }    
+                    
+    
     setting.score = 0;                      //очки 
     setting.start = true;                    // стартуем игру
     gameArea.appendChild(car);             //рисуем див машинки
